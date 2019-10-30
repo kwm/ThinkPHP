@@ -102,15 +102,13 @@ abstract class Dispatch
         if ($data instanceof Response) {
             $response = $data;
         } elseif (!is_null($data)) {
-            // 默认自动识别响应输出类型
-            $type     = $this->request->isJson() ? 'json' : 'html';
-            $response = Response::create($data, $type);
+            $response = $this->app->response->create($data);
         } else {
             $data = ob_get_clean();
 
             $content  = false === $data ? '' : $data;
             $status   = '' === $content && $this->request->isJson() ? 204 : 200;
-            $response = Response::create($content, 'html', $status);
+            $response = $this->app->response->create($content, 'html', $status);
         }
 
         return $response;
