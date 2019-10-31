@@ -46,6 +46,12 @@ class View extends Response
     protected $contentType = 'text/html';
 
     /**
+     * 模版文件名，默认使用控制器/方法同名模版
+     * @var string
+     */
+    protected $template = '';
+
+    /**
      * View对象
      * @var BaseView
      */
@@ -85,9 +91,24 @@ class View extends Response
      */
     protected function output($data): string
     {
+        // 将控制器输出的数据，设置为视图变量
+        $this->assign($data);
+
         // 渲染模板输出
         return $this->view->filter($this->filter)
-            ->fetch($data, $this->vars, $this->isContent);
+            ->fetch($this->template, $this->vars, $this->isContent);
+    }
+
+    /**
+     * 设置模版名称
+     * @param string $template
+     * @return Response
+     */
+    public function template ($template)
+    {
+        $this->template = $template;
+
+        return $this;
     }
 
     /**
