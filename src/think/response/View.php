@@ -96,7 +96,7 @@ class View extends Response
 
         // 渲染模板输出
         return $this->view->filter($this->filter)
-            ->fetch($this->template, $this->vars, $this->isContent);
+            ->fetch($this->template ?: (is_string($data) ? $data : ''), $this->vars, $this->isContent);
     }
 
     /**
